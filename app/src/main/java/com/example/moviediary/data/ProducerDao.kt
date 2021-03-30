@@ -4,10 +4,10 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface  ProducerDao {
+interface ProducerDao {
 
     @Query("SELECT * FROM producers")
-    fun getFilmsList(): Flow<List<Film>>
+    fun getFilmsList(): Flow<List<Producer>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(producer: Producer)

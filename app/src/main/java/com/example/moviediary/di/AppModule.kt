@@ -1,7 +1,9 @@
 package com.example.moviediary.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
+import com.example.moviediary.data.Converters
 import com.example.moviediary.data.MovieDiaryDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,15 +27,18 @@ object AppModule {
         .build()
 
     @Provides
-    fun provideNoteDao(db: MovieDiaryDatabase) = db.filmDao()
+    fun provideFilmDao(db: MovieDiaryDatabase) = db.filmDao()
 
     @Provides
-    fun provideTagDao(db: MovieDiaryDatabase) = db.producerDao()
+    fun provideProducerDao(db: MovieDiaryDatabase) = db.producerDao()
 
     @ApplicationScope
     @Provides
     @Singleton
     fun provideApplicationScope() = CoroutineScope(SupervisorJob())
+
+    @Provides
+    fun provideAppContext(app: Application) = app.baseContext
 }
 
 @Retention(AnnotationRetention.RUNTIME)

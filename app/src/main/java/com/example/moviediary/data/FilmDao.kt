@@ -1,11 +1,10 @@
 package com.example.moviediary.data
 
-import android.provider.ContactsContract
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface  FilmDao {
+interface FilmDao {
 
     @Query("SELECT * FROM films")
     fun getFilmsList(): Flow<List<Film>>

@@ -1,5 +1,6 @@
 package com.example.moviediary.data
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,5 +13,7 @@ data class Film (
     val name: String = "",
     val genre: String = "",
     val year_of_issue: Long = System.currentTimeMillis(),
-    val poster: String = ""
+    val poster: Bitmap,
+    val status: String = "буду смотреть",
+    val rating: Int = 0,
 ) : Parcelable {}

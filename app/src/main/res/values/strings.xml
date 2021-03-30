@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">MovieDiary</string>
+    <string name="app_name">Кино-дневник</string>
+    <string name="film_name">Название</string>
+    <string name="film_genre">жанр</string>
+    <string name="film_status">статус</string>
+    <string name="sort_menu">Сортировка</string>
 </resources>
