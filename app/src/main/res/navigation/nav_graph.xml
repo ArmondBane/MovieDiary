@@ -10,5 +10,32 @@
         android:id="@+id/filmsListFragment"
         android:name="com.example.moviediary.ui.filmslist.FilmsListFragment"
         android:label="Кино-дневник"
-        tools:layout="@layout/films_list_fragment" />
+        tools:layout="@layout/films_list_fragment" >
+        <action
+            android:id="@+id/action_filmsListFragment_to_addEditFilmFragment"
+            app:destination="@id/AddEditFilmFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddEditFilmFragment"
+        android:name="com.example.moviediary.ui.addeditfilm.AddEditFilmFragment"
+        android:label="{fragment_title}"
+        tools:layout="@layout/film_editing_view">
+
+        <argument
+            android:name="film"
+            android:defaultValue="@null"
+            app:argType="com.example.moviediary.data.Film"
+            app:nullable="true" />
+        <argument
+            android:name="tags"
+            android:defaultValue="@null"
+            app:argType="com.example.moviediary.data.Produsers[]"
+            app:nullable="true" />
+        <argument
+            android:name="fragment_title"
+            app:argType="string" />
+
+    </fragment>
+
 </navigation>
