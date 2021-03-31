@@ -4,7 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -19,6 +19,7 @@ import com.example.moviediary.databinding.FilmEditingViewBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+
 
 @AndroidEntryPoint
 class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
@@ -57,6 +58,14 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
 
             addEditFilmImageView.setOnClickListener {
 
+            }
+
+            spinnerView.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, itemSelected: View, selectedItemPosition: Int, selectedId: Long) {
+                    addEditFilmViewModel.filmStatus = resources.getStringArray(R.array.status)[selectedItemPosition]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
 
