@@ -9,4 +9,9 @@
     <string name="action_sort_by_year">Сортировать по году</string>
     <string name="action_sort_by_genre">Сортировать по жанру</string>
     <string name="action_sort_by_producer">Сортировать по продюсеру</string>
+
+    <string-array name="status">
+        <item>Буду смотреть</item>
+        <item>Просмотрено</item>
+    </string-array>
 </resources>

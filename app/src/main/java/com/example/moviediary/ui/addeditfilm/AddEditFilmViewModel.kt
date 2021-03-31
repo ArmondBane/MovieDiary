@@ -1,7 +1,8 @@
 package com.example.moviediary.ui.addeditfilm
 
 import android.graphics.Bitmap
-import android.provider.ContactsContract
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
@@ -16,6 +17,8 @@ import com.example.moviediary.ui.EDIT_FILM_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class AddEditFilmViewModel @ViewModelInject constructor(
         private val filmDao: FilmDao,
@@ -60,10 +63,35 @@ class AddEditFilmViewModel @ViewModelInject constructor(
     private val addEditFilmEventChannel = Channel<AddEditFilmEvent>()
     val addEditFilmEvent = addEditFilmEventChannel.receiveAsFlow()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun onAddClick() {
         if (filmName.isBlank() || filmGenre.isBlank()) {
             showInvalidInputMessage("Поле не может быть пустым")
             return
+        }
+
+        if (film != null) {
+            val updatedFilm = film.copy(
+                    name = filmName,
+                    genre = filmGenre,
+                    year_of_issue = LocalDateTime.parse(filmDate.toString()).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                    poster =  film.poster,
+                    status = film.status,
+                    rating = filmRating.toString().toInt())
+
+            updatedFilm(updatedFilm)
+        }
+        else
+        {
+            val newFilm = Film(
+                    name = filmName,
+                    genre = filmGenre,
+                    year_of_issue = LocalDateTime.parse(filmDate.toString()).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                    poster =  null,
+                    status = "",
+                    rating = filmRating.toString().toInt())
+
+            createFilm(newFilm)
         }
     }
 

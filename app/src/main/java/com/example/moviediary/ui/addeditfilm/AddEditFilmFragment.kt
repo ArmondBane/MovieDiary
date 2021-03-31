@@ -1,8 +1,13 @@
 package com.example.moviediary.ui.addeditfilm
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -20,6 +25,7 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
 
     private val addEditFilmViewModel: AddEditFilmViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -29,12 +35,34 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
             addEditFilmNameView.setText(addEditFilmViewModel.filmName)
             addEditFilmImageView.load(addEditFilmViewModel.filmPoster)
             addEditFilmGenreView.setText(addEditFilmViewModel.filmGenre)
-
+            addEditFilmDateView.setText(addEditFilmViewModel.film?.createdDateFormatted)
+            ratingBar.numStars = addEditFilmViewModel.film?.rating ?: 0
             var prods: String = ""
             addEditFilmViewModel.producers?.forEach {
                 prods += it.name + "\n"
             }
             addEditFilmProducerView.setText(prods)
+
+            addEditFilmNameView.addTextChangedListener {
+                addEditFilmViewModel.filmName = it.toString()
+            }
+
+            addEditFilmGenreView.addTextChangedListener {
+                addEditFilmViewModel.filmGenre = it.toString()
+            }
+
+            addEditFilmDateView.addTextChangedListener {
+                addEditFilmViewModel.filmDate = it.toString()
+            }
+
+            addEditFilmImageView.setOnClickListener {
+
+            }
+
+
+            ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+                addEditFilmViewModel.filmRating = rating.toInt()
+            }
 
             fabAddNote.setOnClickListener {
                 addEditFilmViewModel.onAddClick()
