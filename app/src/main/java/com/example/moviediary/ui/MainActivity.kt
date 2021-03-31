@@ -1,5 +1,6 @@
 package com.example.moviediary.ui
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -34,3 +35,6 @@ class MainActivity : AppCompatActivity(){
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
+
+const val ADD_FILM_RESULT_OK = Activity.RESULT_FIRST_USER
+const val EDIT_FILM_RESULT_OK = Activity.RESULT_FIRST_USER + 1

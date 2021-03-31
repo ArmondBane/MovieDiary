@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <EditText
             android:id="@+id/addEditFilmNameView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <TextView
+                <EditText
                     android:id="@+id/addEditFilmGenreView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,15 @@
                     android:text="Жанр"
                     android:textSize="20sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/addEditFilmDateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Дата"
+                    android:textSize="20sp" />
+
+                <EditText
                     android:id="@+id/addEditFilmProducerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

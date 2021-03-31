@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,12 +63,13 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
             }).attachToRecyclerView(filmsList)
 
             fabAddList.setOnClickListener {
-                //filmsListViewModel.onAddNewNoteClick()
+                filmsListViewModel.onAddNewFilmClick()
             }
         }
 
-        filmsListViewModel.filmsList.observe(viewLifecycleOwner) {
-            filmsListAdapter.setFilms(it)
+        filmsListViewModel.allList.observe(viewLifecycleOwner) {
+            filmsListAdapter.setFilms(it.first)
+            filmsListAdapter.setProducers(it.second)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -80,9 +82,13 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
                             }.show()
                     }
                     is FilmsListViewModel.FilmsListEvent.NavigateToEditFilmScreen -> {
-                        val action = FilmsListFragmentDirections
+                        val action = FilmsListFragmentDirections.actionFilmsListFragmentToAddEditFilmFragment(event.film, event.producers, "Редактирование фильма")
+                        findNavController().navigate(action)
                     }
-                    FilmsListViewModel.FilmsListEvent.NavigateToAddFilmScreen -> TODO()
+                    is FilmsListViewModel.FilmsListEvent.NavigateToAddFilmScreen -> {
+                        val action = FilmsListFragmentDirections.actionFilmsListFragmentToAddEditFilmFragment(null, null, "Новый фильм")
+                        findNavController().navigate(action)
+                    }
                 }.exhaustive
             }
         }
@@ -130,8 +136,8 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
         }
     }
 
-    override fun onItemClick(film: Film, produsers: Array<Producer>) {
-        TODO("Not yet implemented")
+    override fun onItemClick(film: Film, producers: Array<Producer>) {
+        filmsListViewModel.onFilmSelected(film, producers)
     }
 
     override fun onDestroyView() {

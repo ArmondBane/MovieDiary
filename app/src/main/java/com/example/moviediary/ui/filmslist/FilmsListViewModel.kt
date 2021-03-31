@@ -24,14 +24,25 @@ class FilmsListViewModel @ViewModelInject constructor(
     private val filmslistEventChannel = Channel<FilmsListEvent>()
     val filmsListEvent = filmslistEventChannel.receiveAsFlow()
 
-    val filmsList = combine(searchQuery.asFlow(), preferencesFlow) { sQ, pF ->
+    private val filmsList = combine(searchQuery.asFlow(), preferencesFlow) { sQ, pF ->
         Pair(sQ, pF)
     }.flatMapLatest { (sQ, pF) ->
         filmDao.getFilmsList(sQ, pF.sortOrder)
+    }
+
+    val allList = combine(
+            filmsList,
+            producerDao.getProducersList()
+    ){ films, producers ->
+        Pair(films, producers)
     }.asLiveData()
 
     fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
         preferencesManager.updateSortOrder(sortOrder)
+    }
+
+    fun onFilmSelected(film: Film, producers: Array<Producer>) = viewModelScope.launch {
+        filmslistEventChannel.send(FilmsListEvent.NavigateToEditFilmScreen(film, producers))
     }
 
     fun onFilmItemSwiped(film: Film) = viewModelScope.launch {
@@ -43,9 +54,13 @@ class FilmsListViewModel @ViewModelInject constructor(
         filmDao.insert(film)
     }
 
+    fun onAddNewFilmClick() = viewModelScope.launch {
+        filmslistEventChannel.send(FilmsListEvent.NavigateToAddFilmScreen)
+    }
+
     sealed class FilmsListEvent {
         object NavigateToAddFilmScreen : FilmsListEvent()
         data class ShowUndoDeleteNoteMessage(val film: Film) : FilmsListEvent()
-        data class NavigateToEditFilmScreen(val film: Film, val produsers: Array<Producer>) : FilmsListEvent()
+        data class NavigateToEditFilmScreen(val film: Film, val producers: Array<Producer>) : FilmsListEvent()
     }
 }

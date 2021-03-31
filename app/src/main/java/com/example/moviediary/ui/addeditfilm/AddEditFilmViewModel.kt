@@ -1,16 +1,21 @@
 package com.example.moviediary.ui.addeditfilm
 
 import android.graphics.Bitmap
+import android.provider.ContactsContract
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.moviediary.data.Film
 import com.example.moviediary.data.FilmDao
 import com.example.moviediary.data.Producer
 import com.example.moviediary.data.ProducerDao
+import com.example.moviediary.ui.ADD_FILM_RESULT_OK
+import com.example.moviediary.ui.EDIT_FILM_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 class AddEditFilmViewModel @ViewModelInject constructor(
         private val filmDao: FilmDao,
@@ -19,7 +24,7 @@ class AddEditFilmViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val film = state.get<Film>("film")
-    val producers = state.get<Array<Producer>>("film")
+    val producers = state.get<Array<Producer>>("producers")
 
     var filmName = state.get<String>("filmName") ?: film?.name ?: ""
         set(value) {
@@ -52,8 +57,29 @@ class AddEditFilmViewModel @ViewModelInject constructor(
             state.set("filmRating", value)
         }
 
-    private val addEditNoteEventChannel = Channel<AddEditFilmEvent>()
-    val addEditNoteEvent = addEditNoteEventChannel.receiveAsFlow()
+    private val addEditFilmEventChannel = Channel<AddEditFilmEvent>()
+    val addEditFilmEvent = addEditFilmEventChannel.receiveAsFlow()
+
+    fun onAddClick() {
+        if (filmName.isBlank() || filmGenre.isBlank()) {
+            showInvalidInputMessage("Поле не может быть пустым")
+            return
+        }
+    }
+
+    private fun createFilm(newFilm: Film) = viewModelScope.launch {
+        filmDao.insert(newFilm)
+        addEditFilmEventChannel.send(AddEditFilmEvent.NavigateBackWithResult(ADD_FILM_RESULT_OK))
+    }
+
+    private fun updatedFilm(updatedFilm: Film) =viewModelScope.launch {
+        filmDao.update(updatedFilm)
+        addEditFilmEventChannel.send(AddEditFilmEvent.NavigateBackWithResult(EDIT_FILM_RESULT_OK))
+    }
+
+    private fun showInvalidInputMessage(text: String) = viewModelScope.launch {
+        addEditFilmEventChannel.send(AddEditFilmEvent.ShowInvalidInputMessage(text))
+    }
 
     sealed class AddEditFilmEvent {
         data class ShowInvalidInputMessage(val msg: String) : AddEditFilmEvent()

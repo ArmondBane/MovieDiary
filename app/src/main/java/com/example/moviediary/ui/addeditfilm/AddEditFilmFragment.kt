@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
 
-    private val addEditNoteViewModel: AddEditFilmViewModel by viewModels()
+    private val addEditFilmViewModel: AddEditFilmViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,17 +26,23 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
         val binding = FilmEditingViewBinding.bind(view)
 
         binding.apply {
-            addEditFilmNameView.setText(addEditNoteViewModel.filmName)
-            addEditFilmImageView.load(addEditNoteViewModel.filmPoster)
-            addEditFilmGenreView.setText(addEditNoteViewModel.filmGenre)
+            addEditFilmNameView.setText(addEditFilmViewModel.filmName)
+            addEditFilmImageView.load(addEditFilmViewModel.filmPoster)
+            addEditFilmGenreView.setText(addEditFilmViewModel.filmGenre)
+
+            var prods: String = ""
+            addEditFilmViewModel.producers?.forEach {
+                prods += it.name + "\n"
+            }
+            addEditFilmProducerView.setText(prods)
 
             fabAddNote.setOnClickListener {
-
+                addEditFilmViewModel.onAddClick()
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            addEditNoteViewModel.addEditNoteEvent.collect { event ->
+            addEditFilmViewModel.addEditFilmEvent.collect { event ->
                 when (event) {
                     is AddEditFilmViewModel.AddEditFilmEvent.ShowInvalidInputMessage -> {
                         Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_LONG).show()

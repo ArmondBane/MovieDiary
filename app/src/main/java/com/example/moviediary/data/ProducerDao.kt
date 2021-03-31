@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProducerDao {
 
     @Query("SELECT * FROM producers WHERE film_id = :film_id")
-    fun getProducersListByFilmId(film_id: Int): Flow<List<Tag>>
+    fun getProducersListByFilmId(film_id: Int): Flow<List<Producer>>
 
     @Query("SELECT * FROM producers")
     fun getProducersList(): Flow<List<Producer>>

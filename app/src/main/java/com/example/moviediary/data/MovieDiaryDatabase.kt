@@ -44,7 +44,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
             applicationScope.launch {
                 filmDao.insert(Film(
                     name = "Побег из Шоушенка",
-                    genre = "драма",
+                    genre = "dramm",
                     year_of_issue = LocalDateTime.of(1994, 9, 10, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/0b76b2a2-d1c7-4f04-a284-80ff7bb709a4/300x450", context),
                     status = "просмотрено",
@@ -52,7 +52,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                 ))
                 filmDao.insert(Film(
                     name = "Зеленая миля",
-                    genre = "фэнтези, драма, криминал, детектив",
+                    genre = "фэнтези, dramm, криминал, детектив",
                     year_of_issue = LocalDateTime.of(1999, 12, 6, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/4057c4b8-8208-4a04-b169-26b0661453e3/300x450", context),
                     status = "буду смотреть",
@@ -60,7 +60,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                 ))
                 filmDao.insert(Film(
                     name = "Властелин колец: Возвращение Короля",
-                    genre = "фэнтези, приключения, драма",
+                    genre = "фэнтези, приключения, dramm",
                     year_of_issue = LocalDateTime.of(2003, 12, 1, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1900788/fbe4afb6-e190-48f3-9ac1-4de9a1029481/300x450", context),
                     status = "просмотрено",
@@ -76,7 +76,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                 ))
                 filmDao.insert(Film(
                     name = "Властелин колец: Братство кольца",
-                    genre = "фэнтези, приключения, драма",
+                    genre = "фэнтези, приключения, dramm",
                     year_of_issue = LocalDateTime.of(2001, 12, 10, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/1d36b3f8-3379-4801-9606-c330eed60a01/300x450", context),
                     status = "просмотрено",

@@ -24,10 +24,10 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
         submitList(this.filmsList)
     }
 
-    fun setProducers(produsers: List<Producer>) {
+    fun setProducers(producers: List<Producer>) {
         this.filmsList.forEachIndexed { index, element ->
             var mas = emptyArray<Producer>()
-            produsers.forEach{
+            producers.forEach{
                 if (element.id == it.film_id)
                     mas += it
             }
@@ -36,7 +36,7 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
     }
 
     interface OnItemClickListener{
-        fun onItemClick(film: Film, produsers: Array<Producer>)
+        fun onItemClick(film: Film, producers: Array<Producer>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmsListViewHolder {
@@ -64,7 +64,7 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
             }
         }
 
-        fun bind(film: Film, produsers: Array<Producer>) = with(itemView) {
+        fun bind(film: Film, producers: Array<Producer>) = with(itemView) {
             binding.apply {
                 nameTextView.text = film.name
                 genreTextView.text = film.genre
