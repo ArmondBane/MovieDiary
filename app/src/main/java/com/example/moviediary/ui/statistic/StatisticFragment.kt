@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviediary.R
+import com.example.moviediary.data.GenreStatistic
 import com.example.moviediary.databinding.StatisticFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -39,23 +40,19 @@ class StatisticFragment : Fragment(R.layout.statistic_fragment){
             }
         }
 
-        statisticViewModel.genresList.observe(viewLifecycleOwner) {
-            genresStatisticListAdapter.setStatistic(it)
-        }
-
-        statisticViewModel.producersList.observe(viewLifecycleOwner) {
-            producersStatisticListAdapter.setStatistic(it)
-        }
+        genresStatisticListAdapter.setStatistic(statisticViewModel.genresList)
+        producersStatisticListAdapter.setStatistic(statisticViewModel.producersList)
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             statisticViewModel.statisticsEvent.collect { event ->
                 when (event) {
                     is StatisticViewModel.StatisticsEvent.SetAdaptersByStatistic -> {
-                        genresStatisticListAdapter.setStatistic(event.genresList)
-                        producersStatisticListAdapter.setStatistic(event.producersList)
+                        genresStatisticListAdapter.notifyDataSetChanged()
+                        producersStatisticListAdapter.notifyDataSetChanged()
                     }
                 }
             }
         }
+
     }
 }

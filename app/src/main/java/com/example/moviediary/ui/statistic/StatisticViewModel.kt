@@ -11,6 +11,7 @@ import com.example.moviediary.data.GenreStatistic
 import com.example.moviediary.data.ProducerDao
 import com.example.moviediary.data.ProducerStatistic
 import com.example.moviediary.ui.filmslist.FilmsListViewModel
+import com.example.moviediary.util.flattenToList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,19 +24,17 @@ class StatisticViewModel @ViewModelInject constructor(
     @Assisted private val state: SavedStateHandle
 ) : ViewModel() {
 
-    val genresList = filmDao.getGenreStatistic().asLiveData()
-    val producersList = filmDao.getProducerStatistic().asLiveData()
+    val genresList: List<GenreStatistic> = filmDao.getGenreStatistic()
+    val producersList: List<ProducerStatistic> = filmDao.getProducerStatistic()
 
     fun setAllLists() = viewModelScope.launch {
-        val genres = filmDao.getGenreStatistic().first()
-        val producers = filmDao.getProducerStatistic().first()
-        statisticsEventChannel.send(StatisticsEvent.SetAdaptersByStatistic(genres, producers))
+        statisticsEventChannel.send(StatisticsEvent.SetAdaptersByStatistic)
     }
 
     private val statisticsEventChannel = Channel<StatisticsEvent>()
     val statisticsEvent = statisticsEventChannel.receiveAsFlow()
 
     sealed class StatisticsEvent {
-        data class SetAdaptersByStatistic(val genresList: List<GenreStatistic>, val producersList: List<ProducerStatistic>): StatisticsEvent()
+        object SetAdaptersByStatistic: StatisticsEvent()
     }
 }

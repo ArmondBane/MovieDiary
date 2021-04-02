@@ -29,10 +29,10 @@ interface FilmDao {
     fun getFilmsListByProducer(searchQuery: String): Flow<List<Film>>
 
     @Query("SELECT genre, AVG(rating) AS rating FROM films GROUP BY genre")
-    fun getGenreStatistic(): Flow<List<GenreStatistic>>
+    fun getGenreStatistic(): List<GenreStatistic>
 
     @Query("SELECT pr.name AS producer, AVG(fl.rating) AS rating FROM films fl JOIN producers pr ON (fl.id=pr.film_id) GROUP BY pr.name")
-    fun getProducerStatistic(): Flow<List<ProducerStatistic>>
+    fun getProducerStatistic(): List<ProducerStatistic>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(film: Film)

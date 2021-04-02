@@ -67,8 +67,14 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
             binding.apply {
                 nameTextView.text = film.name
                 genreTextView.text = film.genre
-                statusTextView.text = film.status
+                var str = ""
+                producers.forEach {
+                    str += it.name + "\n"
+                }
+                yearTextView.text = film.yearOfIssueFormatted
+                producerTextView.text = str
                 posterImageView.load(film.poster)
+                ratingTextView.text = film.rating?.toString() ?: "0"
             }
         }
     }

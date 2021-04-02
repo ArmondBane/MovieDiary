@@ -19,7 +19,7 @@
             android:layout_weight="2"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:textSize="26dp"
+            android:textSize="20dp"
             android:text="Название"
             android:layout_marginLeft="5dp"/>
 
@@ -27,11 +27,12 @@
             android:id="@+id/statisticRatingView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:textSize="30dp"
             android:textStyle="bold"
             android:textColor="@color/dark_green"
             android:gravity="center"
+            android:background="@drawable/rating_circle"
             android:text="10" />
 
     </LinearLayout>

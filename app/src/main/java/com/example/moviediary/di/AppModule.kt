@@ -22,9 +22,10 @@ object AppModule {
     @Singleton
     fun provideDatabase(app: Application, callback: MovieDiaryDatabase.Callback)
         = Room.databaseBuilder(app, MovieDiaryDatabase::class.java, "movie_diary_database")
-        .fallbackToDestructiveMigration()
-        .addCallback(callback)
-        .build()
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .addCallback(callback)
+            .build()
 
     @Provides
     fun provideFilmDao(db: MovieDiaryDatabase) = db.filmDao()

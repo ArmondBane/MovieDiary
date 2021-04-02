@@ -110,7 +110,7 @@ class AddEditFilmViewModel @ViewModelInject constructor(
                     name = filmName,
                     genre = filmGenre,
                     year_of_issue = dateLong,
-                    poster = bitmapPic,
+                    poster = filmPoster,
                     status = filmStatus,
                     rating = filmRating.toString().toInt())
 
@@ -133,7 +133,7 @@ class AddEditFilmViewModel @ViewModelInject constructor(
                     name = filmName,
                     genre = filmGenre,
                     year_of_issue = dateLong,
-                    poster = bitmapPic,
+                    poster = filmPoster,
                     status = filmStatus,
                     rating = filmRating.toString().toInt())
             newFilm.id = abs(newFilm.hashCode())

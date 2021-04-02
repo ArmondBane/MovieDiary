@@ -114,8 +114,14 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
 
             spinnerView.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, itemSelected: View?, selectedItemPosition: Int, selectedId: Long) {
-                    if(itemSelected != null)
+                    if(itemSelected != null) {
                         addEditFilmViewModel.filmStatus = resources.getStringArray(R.array.status)[selectedItemPosition]
+                        if (addEditFilmViewModel.filmStatus == "Буду смотреть") {
+                            ratingBar.rating = 0.0f
+                            addEditFilmRatingView.text = ratingBar.rating.toInt().toString()
+                            addEditFilmViewModel.filmRating = 0
+                        }
+                    }
                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
@@ -127,6 +133,10 @@ class AddEditFilmFragment : Fragment(R.layout.film_editing_view) {
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
                 addEditFilmViewModel.filmRating = rating.toInt()
                 addEditFilmRatingView.text = rating.toInt().toString()
+                if( rating.toInt() != 0) {
+                    spinnerView.setSelection(1)
+                    addEditFilmViewModel.filmStatus = resources.getStringArray(R.array.status)[1]
+                }
             }
 
             fabAddNote.setOnClickListener {

@@ -19,7 +19,7 @@ data class Film(
         val year_of_issue: Long = System.currentTimeMillis(),
         val poster: Bitmap?,
         val status: String = "Буду смотреть",
-        val rating: Int = 0,
+        val rating: Int? = null,
 ) : Parcelable {
     val yearOfIssueFormatted: String
         @RequiresApi(Build.VERSION_CODES.O) get() = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(Date(year_of_issue))

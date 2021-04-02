@@ -15,7 +15,8 @@
         android:title="@string/sort_menu"
         app:showAsAction="always">
 
-        <menu>
+        <menu
+            android:id="@+id/sort_menu">
 
             <item
                 android:id="@+id/action_sort_by_name"

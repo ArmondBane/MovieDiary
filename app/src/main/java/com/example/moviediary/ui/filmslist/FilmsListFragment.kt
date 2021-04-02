@@ -1,11 +1,15 @@
 package com.example.moviediary.ui.filmslist
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -33,6 +37,8 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
     private val filmsListViewModel: FilmsListViewModel by viewModels()
 
     private val filmsListAdapter: FilmsListAdapter = FilmsListAdapter(this)
+
+    private var sortMenu: MutableList<MenuItem> = arrayListOf()
 
     private lateinit var searchView: SearchView
 
@@ -110,6 +116,11 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_films_list, menu)
 
+        sortMenu.add(menu.findItem(R.id.action_sort_by_name))
+        sortMenu.add(menu.findItem(R.id.action_sort_by_genre))
+        sortMenu.add(menu.findItem(R.id.action_sort_by_year))
+        sortMenu.add(menu.findItem(R.id.action_sort_by_producer))
+
         val searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem.actionView as SearchView
 
@@ -125,22 +136,37 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
 
     }
 
+    private fun resetMenuColors(item: MenuItem) {
+        sortMenu.forEach{ menuItem ->
+            val s = SpannableString(menuItem.title)
+            s.setSpan(ForegroundColorSpan(Color.BLACK), 0, s.length, 0)
+            menuItem.title = s
+        }
+        val s = SpannableString(item.title)
+        s.setSpan(ForegroundColorSpan(resources.getColor(R.color.star_color)), 0, s.length, 0)
+        item.title = s
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.action_sort_by_name -> {
                 filmsListViewModel.onSortOrderSelected(SortOrder.BY_NAME)
+                resetMenuColors(item)
                 true
             }
             R.id.action_sort_by_year -> {
                 filmsListViewModel.onSortOrderSelected(SortOrder.BY_YEAR)
+                resetMenuColors(item)
                 true
             }
             R.id.action_sort_by_genre -> {
                 filmsListViewModel.onSortOrderSelected(SortOrder.BY_GENRE)
+                resetMenuColors(item)
                 true
             }
             R.id.action_sort_by_producer -> {
                 filmsListViewModel.onSortOrderSelected(SortOrder.BY_PRODUCER)
+                resetMenuColors(item)
                 true
             }
             else -> super.onOptionsItemSelected(item)
