@@ -47,7 +47,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                     genre = "dramm",
                     year_of_issue = LocalDateTime.of(1994, 9, 10, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/0b76b2a2-d1c7-4f04-a284-80ff7bb709a4/300x450", context),
-                    status = "просмотрено",
+                    status = "Просмотрено",
                     rating = 10
                 ))
                 filmDao.insert(Film(
@@ -55,7 +55,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                     genre = "фэнтези, dramm, криминал, детектив",
                     year_of_issue = LocalDateTime.of(1999, 12, 6, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/4057c4b8-8208-4a04-b169-26b0661453e3/300x450", context),
-                    status = "буду смотреть",
+                    status = "Буду смотреть",
                     rating = 0
                 ))
                 filmDao.insert(Film(
@@ -63,7 +63,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                     genre = "фэнтези, приключения, dramm",
                     year_of_issue = LocalDateTime.of(2003, 12, 1, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1900788/fbe4afb6-e190-48f3-9ac1-4de9a1029481/300x450", context),
-                    status = "просмотрено",
+                    status = "Просмотрено",
                     rating = 9
                 ))
                 filmDao.insert(Film(
@@ -71,7 +71,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                     genre = "фантастика, драма, приключения",
                     year_of_issue = LocalDateTime.of(2014, 10, 26, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/430042eb-ee69-4818-aed0-a312400a26bf/300x450", context),
-                    status = "просмотрено",
+                    status = "Просмотрено",
                     rating = 9
                 ))
                 filmDao.insert(Film(
@@ -79,7 +79,7 @@ abstract class MovieDiaryDatabase : RoomDatabase() {
                     genre = "фэнтези, приключения, dramm",
                     year_of_issue = LocalDateTime.of(2001, 12, 10, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                     poster = getBitmap("https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/1d36b3f8-3379-4801-9606-c330eed60a01/300x450", context),
-                    status = "просмотрено",
+                    status = "Просмотрено",
                     rating = 8
                 ))
                 producerDao.insert(Producer(

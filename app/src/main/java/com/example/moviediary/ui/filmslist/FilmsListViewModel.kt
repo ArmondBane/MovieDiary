@@ -4,6 +4,9 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.moviediary.data.*
+import com.example.moviediary.ui.ADD_FILM_RESULT_OK
+import com.example.moviediary.ui.EDIT_FILM_RESULT_OK
+import com.example.moviediary.ui.addeditfilm.AddEditFilmViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,20 +22,23 @@ class FilmsListViewModel @ViewModelInject constructor(
 
     val searchQuery = state.getLiveData("searchQuery", "")
 
-    val preferencesFlow = preferencesManager.preferencesFlow
+    private val preferencesFlow = preferencesManager.preferencesFlow
 
-    private val filmslistEventChannel = Channel<FilmsListEvent>()
-    val filmsListEvent = filmslistEventChannel.receiveAsFlow()
+    private val filmsListEventChannel = Channel<FilmsListEvent>()
+    val filmsListEvent = filmsListEventChannel.receiveAsFlow()
 
-    private val filmsList = combine(searchQuery.asFlow(), preferencesFlow) { sQ, pF ->
+    private val filmsList = combine(
+        searchQuery.asFlow(),
+        preferencesFlow
+    ) { sQ, pF ->
         Pair(sQ, pF)
     }.flatMapLatest { (sQ, pF) ->
         filmDao.getFilmsList(sQ, pF.sortOrder)
     }
 
     val allList = combine(
-            filmsList,
-            producerDao.getProducersList()
+        filmsList,
+        producerDao.getProducersList()
     ){ films, producers ->
         Pair(films, producers)
     }.asLiveData()
@@ -42,12 +48,12 @@ class FilmsListViewModel @ViewModelInject constructor(
     }
 
     fun onFilmSelected(film: Film, producers: Array<Producer>) = viewModelScope.launch {
-        filmslistEventChannel.send(FilmsListEvent.NavigateToEditFilmScreen(film, producers))
+        filmsListEventChannel.send(FilmsListEvent.NavigateToEditFilmScreen(film, producers))
     }
 
     fun onFilmItemSwiped(film: Film) = viewModelScope.launch {
         filmDao.delete(film)
-        filmslistEventChannel.send(FilmsListEvent.ShowUndoDeleteNoteMessage(film))
+        filmsListEventChannel.send(FilmsListEvent.ShowUndoDeleteNoteMessage(film))
     }
 
     fun onUndoDeleteClick(film: Film) = viewModelScope.launch  {
@@ -55,12 +61,24 @@ class FilmsListViewModel @ViewModelInject constructor(
     }
 
     fun onAddNewFilmClick() = viewModelScope.launch {
-        filmslistEventChannel.send(FilmsListEvent.NavigateToAddFilmScreen)
+        filmsListEventChannel.send(FilmsListEvent.NavigateToAddFilmScreen)
+    }
+
+    fun onAddEditResult(result: Int) {
+        when (result) {
+            ADD_FILM_RESULT_OK -> showFilmSavedConfirmationMessage("Фильм успешно добавлен")
+            EDIT_FILM_RESULT_OK -> showFilmSavedConfirmationMessage("Фильм успешно обновлен")
+        }
+    }
+
+    private fun showFilmSavedConfirmationMessage(text: String) = viewModelScope.launch {
+        filmsListEventChannel.send(FilmsListEvent.ShowFilmSavedConfirmationMessage(text))
     }
 
     sealed class FilmsListEvent {
         object NavigateToAddFilmScreen : FilmsListEvent()
         data class ShowUndoDeleteNoteMessage(val film: Film) : FilmsListEvent()
         data class NavigateToEditFilmScreen(val film: Film, val producers: Array<Producer>) : FilmsListEvent()
+        data class ShowFilmSavedConfirmationMessage(val msg: String) : FilmsListEvent()
     }
 }

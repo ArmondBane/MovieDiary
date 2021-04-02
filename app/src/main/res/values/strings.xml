@@ -8,7 +8,7 @@
     <string name="action_sort_by_name">Сортировать по имени</string>
     <string name="action_sort_by_year">Сортировать по году</string>
     <string name="action_sort_by_genre">Сортировать по жанру</string>
-    <string name="action_sort_by_producer">Сортировать по продюсеру</string>
+    <string name="action_sort_by_producer">Сортировать по режисеру</string>
 
     <string-array name="status">
         <item>Буду смотреть</item>

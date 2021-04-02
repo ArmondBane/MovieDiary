@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "producers", foreignKeys = [ForeignKey(entity = Film::class, parentColumns = ["id"], childColumns = ["film_id"], onDelete = CASCADE)])
 @Parcelize
 data class Producer (
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String = "",
-    var film_id: Int = 0
+    val film_id: Int = 0
 ) : Parcelable {}

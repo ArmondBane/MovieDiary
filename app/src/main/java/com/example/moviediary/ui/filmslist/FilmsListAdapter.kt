@@ -18,7 +18,7 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
 
     fun setFilms(films: List<Film>) {
         this.filmsList = films
-        this.filmsList.forEach{
+        this.filmsList.forEach{ _ ->
             producersList.add(emptyArray())
         }
         submitList(this.filmsList)
@@ -57,7 +57,6 @@ class FilmsListAdapter(private val listener: OnItemClickListener)
                 root.setOnClickListener {
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-
                         listener.onItemClick(filmsList[position], producersList[position])
                     }
                 }

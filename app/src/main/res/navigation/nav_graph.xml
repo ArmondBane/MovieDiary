@@ -38,4 +38,11 @@
 
     </fragment>
 
+
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.example.moviediary.ui.statistic.StatisticFragment"
+        android:label="Статистика"
+        tools:layout="@layout/statistic_fragment" />
+
 </navigation>

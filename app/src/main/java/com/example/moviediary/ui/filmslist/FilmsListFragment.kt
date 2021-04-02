@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,7 @@ import com.example.moviediary.util.onQueryTextChanged
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+
 
 @AndroidEntryPoint
 class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickListener{
@@ -47,7 +49,7 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
             }
 
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
-                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
                 override fun onMove(
                         recyclerView: RecyclerView,
                         viewHolder: RecyclerView.ViewHolder,
@@ -57,14 +59,20 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val note = filmsListAdapter.currentList[viewHolder.adapterPosition]
-                    filmsListViewModel.onFilmItemSwiped(note)
+                    val film = filmsListAdapter.currentList[viewHolder.adapterPosition]
+                    filmsListViewModel.onFilmItemSwiped(film)
                 }
             }).attachToRecyclerView(filmsList)
 
             fabAddList.setOnClickListener {
                 filmsListViewModel.onAddNewFilmClick()
+                filmsListAdapter.notifyDataSetChanged()
             }
+        }
+
+        setFragmentResultListener("add_edit_request") { _, bundle ->
+            val result = bundle.getInt("add_edit_result")
+            filmsListViewModel.onAddEditResult(result)
         }
 
         filmsListViewModel.allList.observe(viewLifecycleOwner) {
@@ -77,9 +85,9 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
                 when (event) {
                     is FilmsListViewModel.FilmsListEvent.ShowUndoDeleteNoteMessage -> {
                         Snackbar.make(requireView(), "Запись удалена", Snackbar.LENGTH_LONG)
-                            .setAction( "ОТМЕНИТЬ") {
-                                filmsListViewModel.onUndoDeleteClick(event.film)
-                            }.show()
+                                .setAction("ОТМЕНИТЬ") {
+                                    filmsListViewModel.onUndoDeleteClick(event.film)
+                                }.show()
                     }
                     is FilmsListViewModel.FilmsListEvent.NavigateToEditFilmScreen -> {
                         val action = FilmsListFragmentDirections.actionFilmsListFragmentToAddEditFilmFragment(event.film, event.producers, "Редактирование фильма")
@@ -88,6 +96,9 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
                     is FilmsListViewModel.FilmsListEvent.NavigateToAddFilmScreen -> {
                         val action = FilmsListFragmentDirections.actionFilmsListFragmentToAddEditFilmFragment(null, null, "Новый фильм")
                         findNavController().navigate(action)
+                    }
+                    is FilmsListViewModel.FilmsListEvent.ShowFilmSavedConfirmationMessage -> {
+                        Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_SHORT).show()
                     }
                 }.exhaustive
             }

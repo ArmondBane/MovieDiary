@@ -38,7 +38,7 @@ object AppModule {
     fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
     @Provides
-    fun provideAppContext(app: Application) = app.baseContext
+    fun provideAppContext(app: Application): Context = app.baseContext
 }
 
 @Retention(AnnotationRetention.RUNTIME)
