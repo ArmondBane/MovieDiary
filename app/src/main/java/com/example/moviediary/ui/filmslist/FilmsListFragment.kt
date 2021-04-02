@@ -9,14 +9,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviediary.R
 import com.example.moviediary.data.Film
@@ -24,6 +22,7 @@ import com.example.moviediary.data.Producer
 import com.example.moviediary.data.SortOrder
 import com.example.moviediary.databinding.FilmsListFragmentBinding
 import com.example.moviediary.ui.filmslist.FilmsListAdapter.OnItemClickListener
+import com.example.moviediary.util.NpaLinerLayoutManager
 import com.example.moviediary.util.exhaustive
 import com.example.moviediary.util.onQueryTextChanged
 import com.google.android.material.snackbar.Snackbar
@@ -50,7 +49,7 @@ class FilmsListFragment : Fragment(R.layout.films_list_fragment),  OnItemClickLi
         binding.apply {
             filmsList.apply {
                 adapter = filmsListAdapter
-                layoutManager = LinearLayoutManager(requireContext())
+                layoutManager = NpaLinerLayoutManager(requireContext())
                 setHasFixedSize(true)
             }
 
